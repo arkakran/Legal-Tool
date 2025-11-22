@@ -1,10 +1,6 @@
 # ⚖️ Legal Brief Analyzer
 
-AI-powered tool that extracts and ranks key legal arguments from briefs, motions, and court opinions using NLP and LLM technology.
-
-![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
-![Flask](https://img.shields.io/badge/flask-3.0.0-green.svg)
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+AI-powered tool that extracts and ranks key legal arguments from briefs, motions, and court opinions using LLM .
 
 ## 🚀 Features
 
@@ -24,8 +20,8 @@ AI-powered tool that extracts and ranks key legal arguments from briefs, motions
 ## 🛠️ Installation
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/legal-brief-analyzer.git
-cd legal-brief-analyzer
+git clone https://github.com/arkakran/Legal-Tool.git
+cd Legal-Tool
 
 # Create virtual environment
 python -m venv venv
@@ -111,22 +107,3 @@ python verify.py
 
 - **Processing**: 15-30s for 20-30 page documents
 - **Memory**: ~500MB-1GB during processing
-- **Scalable**: Stateless design for horizontal scaling
-
-## 📝 License
-
-MIT License - see [LICENSE](LICENSE) file
-
-## 👨‍💻 Author
-
-**Aryan Kakran**
-- Email: rnkakran@gmail.com
-- GitHub: [@yourusername](https://github.com/yourusername)
-
-## 🙏 Credits
-
-Built with [Groq](https://groq.com/), [FAISS](https://github.com/facebookresearch/faiss), [Flask](https://flask.palletsprojects.com/), and [Sentence Transformers](https://www.sbert.net/)
-
----
-
-**Built for attorneys and legal professionals** ⚖️
