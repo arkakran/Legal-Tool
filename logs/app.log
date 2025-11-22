@@ -1,0 +1,39 @@
+2025-11-22 11:40:57.586 | INFO     | app.extensions:init_extensions:40 - Extensions initialized
+2025-11-22 11:41:04.407 | INFO     | app:create_app:36 - Flask app created successfully
+2025-11-22 11:41:04.407 | INFO     | __main__:<module>:7 - Starting Flask development server...
+2025-11-22 11:41:05.164 | INFO     | app.extensions:init_extensions:40 - Extensions initialized
+2025-11-22 11:41:10.501 | INFO     | app:create_app:36 - Flask app created successfully
+2025-11-22 11:41:10.501 | INFO     | __main__:<module>:7 - Starting Flask development server...
+2025-11-22 11:41:52.416 | INFO     | app.blueprints.api.routes:analyze:42 - File saved: 1763791912416_Amicus_Brief_on_Behalf_of_Mississippi_Alabama_Alaska_Arkansas_etc....pdf
+2025-11-22 11:41:52.416 | INFO     | app.services.pipeline:__init__:19 - Initializing analysis pipeline...
+2025-11-22 11:41:52.416 | INFO     | app.utils.embeddings:__init__:13 - Loading embedding model: sentence-transformers/all-MiniLM-L6-v2
+2025-11-22 11:41:56.131 | INFO     | app.utils.embeddings:__init__:16 - Embedding model loaded. Dimension: 384
+2025-11-22 11:41:56.481 | INFO     | app.services.llm_analyzer:__init__:36 - LLM Analyzer initialized with model: llama-3.3-70b-versatile
+2025-11-22 11:41:56.481 | INFO     | app.services.pipeline:__init__:49 - Pipeline initialized
+2025-11-22 11:41:56.481 | INFO     | app.blueprints.api.routes:analyze:48 - Starting analysis for: Amicus_Brief_on_Behalf_of_Mississippi_Alabama_Alaska_Arkansas_etc....pdf
+2025-11-22 11:41:56.481 | INFO     | app.services.pipeline:analyze_document:58 - Step 1: Validating and hashing file...
+2025-11-22 11:41:56.504 | INFO     | app.services.pipeline:analyze_document:71 - Document ID: a78cdd8d8f7d...
+2025-11-22 11:41:56.514 | INFO     | app.services.pipeline:analyze_document:74 - Step 2: Processing PDF...
+2025-11-22 11:41:56.567 | INFO     | app.services.pdf_processor:process_pdf:18 - Processing PDF: 26 pages
+2025-11-22 11:41:59.683 | INFO     | app.services.pdf_processor:process_pdf:33 - Processed 26 pages into 45 chunks
+2025-11-22 11:41:59.683 | INFO     | app.services.pipeline:analyze_document:81 - Step 3: Extracting metadata...
+2025-11-22 11:41:59.683 | INFO     | app.services.metadata_extractor:extract_metadata:22 - Extracted metadata: 45 chunks, 26 pages
+2025-11-22 11:41:59.696 | INFO     | app.services.pipeline:analyze_document:85 - Step 4: Initializing vector store...
+2025-11-22 11:41:59.698 | INFO     | app.services.vector_store:initialize_index:29 - Initialized FAISS index for doc: a78cdd8d8f7dfd7cb6e5b21ecb821a8a919d671ec8fb48ec1bd120cd812f0530
+2025-11-22 11:41:59.698 | INFO     | app.services.pipeline:analyze_document:89 - Step 5: Embedding & indexing...
+2025-11-22 11:42:07.669 | DEBUG    | app.utils.embeddings:encode:33 - Generated 45 embeddings
+2025-11-22 11:42:07.672 | INFO     | app.services.vector_store:add_chunks:46 - Added 45 chunks to vector store
+2025-11-22 11:42:07.672 | INFO     | app.services.pipeline:analyze_document:93 - Step 6: Retrieving relevant chunks...
+2025-11-22 11:42:07.703 | DEBUG    | app.utils.embeddings:encode:33 - Generated 1 embeddings
+2025-11-22 11:42:07.706 | INFO     | app.services.vector_store:search:87 - Retrieved 45 chunks for query
+2025-11-22 11:42:07.707 | INFO     | app.services.pipeline:analyze_document:102 - Step 7: Analyzing with LLM...
+2025-11-22 11:42:10.468 | INFO     | app.services.llm_analyzer:analyze_chunks:102 - Extracted 5 legal arguments
+2025-11-22 11:42:10.469 | INFO     | app.services.pipeline:analyze_document:109 - Step 8: Post-processing...
+2025-11-22 11:42:10.469 | DEBUG    | app.services.post_processor:_find_best_matching_chunk:104 - Quote match confidence: 0.40
+2025-11-22 11:42:10.469 | DEBUG    | app.services.post_processor:_find_best_matching_chunk:104 - Quote match confidence: 0.93
+2025-11-22 11:42:10.469 | DEBUG    | app.services.post_processor:_find_best_matching_chunk:104 - Quote match confidence: 1.00
+2025-11-22 11:42:10.469 | DEBUG    | app.services.post_processor:_find_best_matching_chunk:104 - Quote match confidence: 0.51
+2025-11-22 11:42:10.469 | DEBUG    | app.services.post_processor:_find_best_matching_chunk:104 - Quote match confidence: 0.58
+2025-11-22 11:42:10.469 | INFO     | app.services.post_processor:process_and_rank:72 - Processed and ranked 5 final key points
+2025-11-22 11:42:10.469 | INFO     | app.services.pipeline:analyze_document:127 - Analysis complete in 13.99s
+2025-11-22 11:42:10.469 | INFO     | app.blueprints.api.routes:analyze:54 - Cleaned up temp file: 1763791912416_Amicus_Brief_on_Behalf_of_Mississippi_Alabama_Alaska_Arkansas_etc....pdf

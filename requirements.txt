@@ -1,0 +1,15 @@
+Flask==3.0.0
+Werkzeug==3.0.1
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+pypdf==3.17.0
+pdfplumber==0.10.3
+faiss-cpu==1.7.4
+sentence-transformers==2.7.0
+torch==2.1.0
+groq==0.4.1
+tiktoken==0.5.2
+rapidfuzz==3.5.2
+loguru==0.7.2
+gunicorn==21.2.0
