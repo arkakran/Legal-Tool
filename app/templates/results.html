@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - Legal Brief Analyzer{% endblock %}
+
+{% block content %}
+<div class="results-section">
+    <div class="results-header">
+        <h2>Analysis Results</h2>
+        <a href="/" class="btn btn-secondary">Analyze Another Document</a>
+    </div>
+
+    <div id="resultsContent">
+        <div class="loading">Loading results...</div>
+    </div>
+
+    <div id="documentInfo" class="card document-info" style="display: none;">
+        <h3>Document Information</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Document Name:</span>
+                <span class="info-value" id="docName"></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Total Pages:</span>
+                <span class="info-value" id="totalPages"></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Processing Time:</span>
+                <span class="info-value" id="processingTime"></span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Arguments Found:</span>
+                <span class="info-value" id="argumentsCount"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="keyPoints" class="key-points" style="display: none;">
+        <h3>Key Legal Arguments</h3>
+        <div id="pointsList"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Load results from sessionStorage
+const resultsData = JSON.parse(sessionStorage.getItem('analysisResults') || '{}');
+
+if (resultsData && resultsData.document_id) {
+    displayResults(resultsData);
+} else {
+    document.getElementById('resultsContent').innerHTML = 
+        '<div class="error-message">No results found. Please analyze a document first.</div>';
+}
+
+function displayResults(data) {
+    // Hide loading
+    document.querySelector('.loading').style.display = 'none';
+    
+    // Show document info
+    document.getElementById('documentInfo').style.display = 'block';
+    document.getElementById('docName').textContent = data.document_name;
+    document.getElementById('totalPages').textContent = data.total_pages;
+    document.getElementById('processingTime').textContent = `${data.processing_time}s`;
+    document.getElementById('argumentsCount').textContent = data.key_points.length;
+    
+    // Show key points
+    document.getElementById('keyPoints').style.display = 'block';
+    
+    const pointsList = document.getElementById('pointsList');
+    pointsList.innerHTML = '';
+    
+    data.key_points.forEach((point, index) => {
+        const pointCard = createPointCard(point, index + 1);
+        pointsList.appendChild(pointCard);
+    });
+}
+
+function createPointCard(point, rank) {
+    const card = document.createElement('div');
+    card.className = 'point-card';
+    
+    const stanceClass = `stance-${point.stance}`;
+    const categoryBadge = point.category ? `<span class="badge badge-category">${point.category}</span>` : '';
+    
+    card.innerHTML = `
+        <div class="point-header">
+            <span class="point-rank">#${rank}</span>
+            <span class="badge ${stanceClass}">${point.stance}</span>
+            ${categoryBadge}
+            <span class="point-score">Score: ${(point.combined_score * 100).toFixed(0)}%</span>
+        </div>
+        
+        <div class="point-content">
+            <h4>${point.summary}</h4>
+            
+            ${point.importance ? `<p class="point-importance"><strong>Importance:</strong> ${point.importance}</p>` : ''}
+            
+            ${point.supporting_quote ? `
+                <div class="point-quote">
+                    <strong>Supporting Quote:</strong>
+                    <blockquote>"${point.supporting_quote}"</blockquote>
+                </div>
+            ` : ''}
+            
+            ${point.legal_concepts && point.legal_concepts.length > 0 ? `
+                <div class="point-concepts">
+                    <strong>Legal Concepts:</strong>
+                    ${point.legal_concepts.map(c => `<span class="badge badge-concept">${c}</span>`).join(' ')}
+                </div>
+            ` : ''}
+        </div>
+        
+        <div class="point-footer">
+            ${point.page_start ? `<span class="page-ref">📄 Page ${point.page_start}${point.page_end && point.page_end !== point.page_start ? `-${point.page_end}` : ''}</span>` : ''}
+            <span class="importance-score">Importance: ${(point.importance_score * 100).toFixed(0)}%</span>
+        </div>
+    `;
+    
+    return card;
+}
+</script>
+{% endblock %}

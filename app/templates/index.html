@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Document - Legal Brief Analyzer{% endblock %}
+
+{% block content %}
+<div class="upload-section">
+    <div class="card">
+        <h2>Upload Legal Document</h2>
+        <p>Upload a PDF legal brief, motion, or opinion for AI-powered analysis</p>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            <div class="file-input-wrapper">
+                <input type="file" id="fileInput" name="file" accept=".pdf" required>
+                <label for="fileInput" class="file-label">
+                    <span class="file-icon">📄</span>
+                    <span id="fileName">Choose PDF file...</span>
+                </label>
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-primary">
+                <span class="btn-text">Analyze Document</span>
+                <span class="btn-loader" style="display: none;">⏳ Processing...</span>
+            </button>
+        </form>
+
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="progressBar" class="progress-bar" style="display: none;">
+            <div class="progress-bar-fill"></div>
+            <p class="progress-text">Analyzing document... This may take 30-60 seconds</p>
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3>How it works</h3>
+        <div class="steps">
+            <div class="step">
+                <span class="step-number">1</span>
+                <div class="step-content">
+                    <h4>Upload Document</h4>
+                    <p>Upload your PDF legal document (max 50MB)</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                <div class="step-content">
+                    <h4>AI Analysis</h4>
+                    <p>Our AI extracts key legal arguments and points</p>
+                </div>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <div class="step-content">
+                    <h4>View Results</h4>
+                    <p>Get ranked arguments with page references</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('fileInput').addEventListener('change', function(e) {
+    const fileName = e.target.files[0]?.name || 'Choose PDF file...';
+    document.getElementById('fileName').textContent = fileName;
+});
+
+document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    
+    if (!file) {
+        showError('Please select a file');
+        return;
+    }
+    
+    if (!file.name.toLowerCase().endsWith('.pdf')) {
+        showError('Please select a PDF file');
+        return;
+    }
+    
+    // Show loading state
+    document.getElementById('submitBtn').disabled = true;
+    document.querySelector('.btn-text').style.display = 'none';
+    document.querySelector('.btn-loader').style.display = 'inline';
+    document.getElementById('progressBar').style.display = 'block';
+    document.getElementById('errorMessage').style.display = 'none';
+    
+    // Prepare form data
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Store results in sessionStorage
+            sessionStorage.setItem('analysisResults', JSON.stringify(data));
+            // Redirect to results page
+            window.location.href = `/results/${data.document_id}`;
+        } else {
+            showError(data.error || 'Analysis failed');
+            resetForm();
+        }
+    } catch (error) {
+        showError('Network error. Please try again.');
+        resetForm();
+    }
+});
+
+function showError(message) {
+    const errorDiv = document.getElementById('errorMessage');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+}
+
+function resetForm() {
+    document.getElementById('submitBtn').disabled = false;
+    document.querySelector('.btn-text').style.display = 'inline';
+    document.querySelector('.btn-loader').style.display = 'none';
+    document.getElementById('progressBar').style.display = 'none';
+}
+</script>
+{% endblock %}
