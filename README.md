@@ -97,7 +97,7 @@ legal-brief-analyzer/
 ├── .env                           # Environment variables
 ├── requirements.txt               # Dependencies
 ├── run.py                         # Application entry point
-└── README.md                    # This file
+└── README.md                      # This file
 ```
 
 ---
@@ -563,3 +563,4 @@ Return Top 10 Arguments
 -  No sensitive data in error messages
 
 ---
+
